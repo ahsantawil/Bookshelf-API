@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/ahsantawil/Bookshelf-API/issues"
   },
-  "homepage": "https://github.com/ahsantawil/Bookshelf-API#readme"
+  "homepage": "https://github.com/ahsantawil/Bookshelf-API#readme",
+  "dependencies": {
+    "@hapi/hapi": "^20.2.2"
+  }
 }
