@@ -21,7 +21,7 @@ const addBooks = (req, h) => {
             status: 'success',
             message: 'Buku berhasil ditambahkan',
             data: {
-                noted: id,
+                book: id,
             },
         });
         response.code(201);
@@ -40,7 +40,7 @@ const addBooks = (req, h) => {
 const getBooks = (req, h) => ({
     status: 'success',
     data: {
-        notes,
+        Books,
     },
 });
 
@@ -66,7 +66,7 @@ const getBooksId = (req, h) => {
     return response;
 };
 
-const editBooks = () => {
+const editBooks = (req, h) => {
     const { id } = req.params;
 
     const { name, year, author, summary, publisher, pageCount, readPage, reading } = req.payload;
