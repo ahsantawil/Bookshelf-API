@@ -1,7 +1,7 @@
 const { nanoid } = require ('nanoid');
 const Books = require('./books');
 
-const addBooks = (req, h) => {
+const addBook = (req, h) => {
     const { name, year, author, summary, publisher, pageCount, readPage, reading } = req.payload;
 
     const id = nanoid(16);
@@ -15,8 +15,8 @@ const addBooks = (req, h) => {
     Books.push(newBooks);
 
     const isSuccess = Books.filter((book) => book.id === id).length > 0;
-
-    if (isSuccess) {
+    
+    if(isSuccess) {
         const response = h.response({
             status: 'success',
             message: 'Buku berhasil ditambahkan',
@@ -28,6 +28,7 @@ const addBooks = (req, h) => {
         return response;
     }
 
+    
     const response = h.response({
         status: 'fail',
         message: 'Buku gagal ditambahkan',
@@ -37,14 +38,14 @@ const addBooks = (req, h) => {
 
 };
 
-const getBooks = (req, h) => ({
+const getBook = (req, h) => ({
     status: 'success',
     data: {
         Books,
     },
 });
 
-const getBooksId = (req, h) => {
+const getBookWithId = (req, h) => {
     const { id } = req.params;
 
     const book = Books.filter((n) => n.id === id)[0];
@@ -66,7 +67,7 @@ const getBooksId = (req, h) => {
     return response;
 };
 
-const editBooks = (req, h) => {
+const editBook = (req, h) => {
     const { id } = req.params;
 
     const { name, year, author, summary, publisher, pageCount, readPage, reading } = req.payload;
@@ -80,13 +81,10 @@ const editBooks = (req, h) => {
             name, year, author, summary, publisher, pageCount, readPage, reading, updatedAt,
         };
 
-        const response = h.response({
+        return {
             status: 'success',
             message: 'Buku berhasil diperbaharui',
-        });
-
-        response.code(200);
-        return response;
+        };
     }
 
     const response = h.response({
@@ -97,7 +95,7 @@ const editBooks = (req, h) => {
     return response;
 };
 
-const deleteBooks = (req, h) => {
+const deleteBook = (req, h) => {
     const { id } = req.params;
 
     const index = Books.findIndex((book) => book.id === id);
@@ -122,4 +120,4 @@ const deleteBooks = (req, h) => {
     return response;
 };
 
-module.exports = { addBooks, getBooks, getBooksId, editBooks, deleteBooks };
+module.exports = { addBook, getBook, getBookWithId, editBook, deleteBook };
