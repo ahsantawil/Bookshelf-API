@@ -5,9 +5,9 @@ const addBook = (req, h) => {
     const { name, year, author, summary, publisher, pageCount, readPage, reading } = req.payload;
 
     const id = nanoid(16);
-    const countpage = (req.payload.pageCount === req.payload.readPage);
-    const createdAt = new Date().toISOString();
-    const updatedAt = createdAt;
+    const finished = (req.payload.pageCount === req.payload.readPage);
+    const insertedAt = new Date().toISOString();
+    const updatedAt = insertedAt;
 
     if (name === undefined) {
         const response = h.response ({
@@ -28,7 +28,7 @@ const addBook = (req, h) => {
     }
 
     const newBook = {
-        id, name, year, author, summary, publisher, pageCount, readPage, reading, createdAt, updatedAt
+        id, name, year, author, summary, publisher, pageCount, readPage, reading, insertedAt, updatedAt, finished
     };
 
     books.push(newBook);
@@ -104,6 +104,24 @@ const editBook = (req, h) => {
     const { name, year, author, summary, publisher, pageCount, readPage, reading } = req.payload;
     const updatedAt = new Date().toISOString();
 
+    if (name === undefined) {
+        const response = h.response ({
+            status : 'fail',
+            message: 'Gagal memperbarui buku. Mohon isi nama buku',
+        });
+        response.code(400)
+        return response;
+    };
+
+    if (readPage > pageCount) {
+        const response = h.response({
+            status: 'fail',
+            message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
+        });
+        response.code(400);
+        return response;
+    }
+
     const index = books.findIndex((book) => book.id === id);
 
     if (index !== -1) {
@@ -119,8 +137,8 @@ const editBook = (req, h) => {
     }
 
     const response = h.response({
-        status: 'Fail',
-        message: 'Gagal memperbaharui buku. ID tidak ditemukan',
+        status: 'fail',
+        message: 'Gagal memperbarui buku. Id tidak ditemukan',
     });
     response.code(404);
     return response;
@@ -143,8 +161,8 @@ const deleteBook = (req, h) => {
     }
 
     const response = h.response({
-        status: 'Fail',
-        message: 'Buku gagal dihapus, Id tidak ditemukan',
+        status: 'fail',
+        message: 'Buku gagal dihapus. Id tidak ditemukan',
     });
 
     response.code(404);
